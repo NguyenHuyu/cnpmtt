@@ -88,42 +88,24 @@ export const Aside = () => {
                 <span className='flex-1 ms-3 text-left rtl:text-right whitespace-nowrap'>
                   Quản lý phòng
                 </span>
-                {!openQlPhong ? (
-                  <svg
-                    className='w-3 h-3'
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 10 6'
-                  >
-                    <path
-                      stroke='currentColor'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='m1 1 4 4 4-4'
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className='w-3 h-3 '
-                    aria-hidden='true'
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 14 8'
-                  >
-                    <path
-                      stroke='currentColor'
-                      stroke-linecap='round'
-                      stroke-linejoin='round'
-                      stroke-width='2'
-                      d='M13 7 7.674 1.3a.91.91 0 0 0-1.348 0L1 7'
-                    />
-                  </svg>
-                )}
+                <svg
+                  className={!openQlPhong ? 'w-3 h-3' : 'w-3 h-3 rotate-180'}
+                  aria-hidden='true'
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 10 6'
+                >
+                  <path
+                    stroke='currentColor'
+                    stroke-linecap='round'
+                    stroke-linejoin='round'
+                    stroke-width='2'
+                    d='m1 1 4 4 4-4'
+                  />
+                </svg>
               </button>
               {openQlPhong && (
-                <ul id='dropdown-example' className=' block py-2 space-y-2'>
+                <ul id='dropdown-example' className=' block py-2 space-y-2 '>
                   <li>
                     <Link
                       href='/ql-phong'

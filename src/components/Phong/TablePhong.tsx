@@ -98,6 +98,39 @@ const TablePhong = () => {
             <td className='px-6 py-4'>Accessories</td>
             <td className='px-6 py-4'>Xem chi tiết | sửa | Xóa</td>
           </tr>
+          <tr className='bg-white dark:bg-gray-800'>
+            <th
+              scope='row'
+              className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+            >
+              Magic Mouse 2
+            </th>
+            <td className='px-6 py-4'>Black</td>
+            <td className='px-6 py-4'>Accessories</td>
+            <td className='px-6 py-4'>Xem chi tiết | sửa | Xóa</td>
+          </tr>
+          <tr className='bg-white dark:bg-gray-800'>
+            <th
+              scope='row'
+              className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+            >
+              Magic Mouse 2
+            </th>
+            <td className='px-6 py-4'>Black</td>
+            <td className='px-6 py-4'>Accessories</td>
+            <td className='px-6 py-4'>Xem chi tiết | sửa | Xóa</td>
+          </tr>
+          <tr className='bg-white dark:bg-gray-800'>
+            <th
+              scope='row'
+              className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+            >
+              Magic Mouse 2
+            </th>
+            <td className='px-6 py-4'>Black</td>
+            <td className='px-6 py-4'>Accessories</td>
+            <td className='px-6 py-4'>Xem chi tiết | sửa | Xóa</td>
+          </tr>
         </tbody>
       </table>
     </div>
