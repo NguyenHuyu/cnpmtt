@@ -2,7 +2,6 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 
@@ -11,11 +10,182 @@ generator client {
 }
 
 model Staff {
-  id             String    @id @default(uuid())
-  username       String    @unique
-  password       String
-  imageUrl       String
-  bio            String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  id         String     @id @default(uuid())
+  username   String
+  staffID Int @unique
+  password   String
+  imageUrl   String
+  bio        String?
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  // Thêm quan hệ ngược từ Staff đến Booking
+  bookings   Booking_Detail[]
+
 }
+
+model Booking {
+  id                String            @id @default(uuid())
+  bookingID         String            @unique
+  customer          Customer          @relation(fields: [customerID], references: [id])
+  customerID        String
+
+  booking_detail    Booking_Detail[]
+  bill              Bill []
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime          @updatedAt
+}
+
+model Booking_Detail {
+  id                 Int      @id @default(autoincrement())
+  booking            Booking             @relation(fields: [bookingID], references: [id])
+  bookingID          String
+
+  room               Room                @relation(fields: [roomID], references: [id])
+  roomID             String
+
+  staff             Staff             @relation(fields: [staffID], references: [id])
+  staffID           String
+
+  rent_type          Rent_Type           @relation(fields: [rentTypeID], references: [id])
+  rentTypeID       Int
+
+  service          Service           @relation(fields: [serviceID], references: [id])
+  serviceID       Int
+
+
+
+  comment           String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Service_Type {
+  id         Int    @unique
+  serviceTypeID   String @unique
+  name   String
+  service    Service[]
+
+}
+
+model Service {
+  id         Int    @unique
+  serviceID   String @unique
+  name   String
+  price  Int
+  service_type    Service_Type @relation(fields: [serviceTypeID], references: [id])
+  serviceTypeID   Int
+  booking_detail    Booking_Detail[]
+}
+
+
+
+model Rent_Type {
+  id         Int    @unique
+  rentTypeID   String @unique
+  name   String
+  book_detail    Booking_Detail[]
+}
+
+model Room_Type{
+  id         Int    @unique
+  roomType   String
+  roomPrice  Int
+  area       Int
+  room        Room[]
+}
+
+model Room {
+  id         String     @id @default(uuid())  @unique
+  roomID     Int        @unique
+  roomName   String
+
+  room_type             Room_Type @relation(fields: [room_type_ID], references: [id])
+  room_type_ID           Int
+
+  booking_detail        Booking_Detail[]
+
+
+
+  status  String?
+}
+
+
+model Customer {
+  id         String     @id @default(uuid())  @unique
+  username   String
+  citizenID  String
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  // Thêm quan hệ ngược từ Customer đến Booking
+  bookings   Booking[]
+}
+
+model Bill_Detail{
+  id            Int      @id @default(autoincrement())
+  bill            Bill      @relation(fields: [billID], references: [id])
+  billID          String
+
+  total          Int
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+
+model Bill {
+  id         String     @id @default(uuid())  @unique
+  billID     String     @unique
+
+  booking    Booking    @relation(fields: [bookingID], references: [id])
+  bookingID  String
+
+  cash     String
+  comment  String?
+
+  bill_detail Bill_Detail[]
+  report_detail  Report_Detail[]
+
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+
+model Report_Detail{
+  id            Int      @id @default(autoincrement())
+
+  report            Report      @relation(fields: [reportID], references: [id])
+  reportID          String
+
+    bill            Bill      @relation(fields: [billID], references: [id])
+  billID          String
+
+  spring          Int
+
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Report_Type {
+  id         Int    @unique
+  reportTypeID   String @unique
+  name   String
+  report        Report[]
+}
+
+
+model Report {
+  id         String     @id @default(uuid())  @unique
+  turnover Int
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+
+  report_type Report_Type @relation(fields: [reportTypeID], references: [id])
+  reportTypeID Int
+  report_detail Report_Detail[]
+}
+
+
