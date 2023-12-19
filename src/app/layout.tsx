@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { ClerkProvider } from '@clerk/nextjs'
-import { dark } from '@clerk/themes'
 import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
@@ -22,11 +21,7 @@ export default function RootLayout({
     <AuthProviders>
       <html lang='en'>
         <body className={inter.className}>
-          <ThemeProvider
-            attribute='class'
-            forcedTheme='dark'
-            storageKey='streaming'
-          >
+          <ThemeProvider attribute='class' storageKey='streaming'>
             {children}
           </ThemeProvider>
         </body>

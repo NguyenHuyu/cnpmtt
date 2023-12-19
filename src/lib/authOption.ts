@@ -12,10 +12,10 @@ const baseDN = process.env.BASE_DN
 export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
-      name: 'LDAP',
+      name: 'Acc',
       credentials: {
-        username: { label: 'Account', type: 'text', placeholder: '' },
-        password: { label: 'Password', type: 'password' }
+        username: { label: 'Tài khoản', type: 'text', placeholder: '' },
+        password: { label: 'Mật khẩu', type: 'password' }
       },
       async authorize(credentials) {
         const { username, password } = credentials
