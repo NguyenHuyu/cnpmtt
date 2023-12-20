@@ -1,5 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: '/daa/:path*',
+        destination: 'https://api.siu.edu.vn/daa/:path*'
+      }
+    ]
+  },
   eslint: {
     dirs: ['src'],
     ignoreDuringBuilds: true
@@ -14,3 +22,4 @@ const nextConfig = {
 }
 
 module.exports = nextConfig
+
