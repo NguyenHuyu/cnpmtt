@@ -1,10 +1,15 @@
 'use client'
 import React from 'react'
-import { useGettypeRoomsQuery } from '@/redux/createApi/typeRoom'
+import TableLoaiPhong from '@/components/LoaiPhong/TableLoaiPhong'
 const Page = () => {
-  const { data } = useGettypeRoomsQuery({ dataQuery: '' })
-  console.log('data', data)
-  return <div>ql loai phong</div>
+
+  return (
+    <>
+      <h1 className='pt-[20px] text-center  '>Quản Lý Loại Phòng</h1>
+      <div className='h-[30px]' />
+      <TableLoaiPhong />
+    </>
+  )
 }
 
 export default Page

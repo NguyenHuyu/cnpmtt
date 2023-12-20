@@ -11,7 +11,7 @@ const Page = () => {
       <h1 className='pt-[20px] text-center  '>Quản Lý Phòng</h1>
 
       <div className='h-[30px]' />
-      {/* <TablePhong /> */}
+      <TablePhong />
     </>
   )
 }
