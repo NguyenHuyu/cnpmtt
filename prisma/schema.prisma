@@ -27,7 +27,7 @@ model NhanVien {
 // Loai phong
 model LoaiPhong{
   id           Int        @id @default(autoincrement())
-  tenloaiphong String 
+  tenloaiphong String
   dientich        String
   gia       String
   dsphong Phong[]
@@ -42,11 +42,11 @@ maloaiphong Int
 songuoi String
 trangthai String
 dsphieuthuephong PhieuThuePhong[]
-} 
+}
 
 model LoaiDichVu{
   id           Int        @id @default(autoincrement())
-  tenloaidichvu String 
+  tenloaidichvu String
   dsdichvu DichVu[]
 }
 
@@ -58,7 +58,7 @@ loaidichvu LoaiDichVu @relation(fields: [maloaidichvu], references: [id])
 maloaidichvu Int
 trangthai String
 dschitietthuedichvu ChiTietThueDichVu[]
-} 
+}
 
 
 model ChiTietThueDichVu{
@@ -76,7 +76,7 @@ model KhachHang{
   tenkhachhang String
   cmnd String
   sdt String
-  diachi String 
+  diachi String
   quocgia String
   dsphieuthue PhieuThuePhong[]
   hoadon HoaDon?

@@ -19,16 +19,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthProviders>
-      <html lang='en'>
-        <ReduxProvider>
-          <body className={inter.className}>
-            <ThemeProvider attribute='class' storageKey='streaming'>
-              {children}
-            </ThemeProvider>
-          </body>
-        </ReduxProvider>
-      </html>
-    </AuthProviders>
+    <html lang='en'>
+      <body className={inter.className}>{children}</body>
+    </html>
   )
 }
