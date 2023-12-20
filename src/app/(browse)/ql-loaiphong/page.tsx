@@ -1,11 +1,10 @@
+'use client'
 import React from 'react'
-
-const page = () => {
-  return (
-    <div>
-      ql loai phong
-    </div>
-  )
+import { useGettypeRoomsQuery } from '@/redux/createApi/typeRoom'
+const Page = () => {
+  const { data } = useGettypeRoomsQuery({ dataQuery: '' })
+  console.log('data', data)
+  return <div>ql loai phong</div>
 }
 
-export default page
+export default Page
