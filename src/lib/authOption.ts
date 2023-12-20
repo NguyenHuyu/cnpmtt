@@ -12,20 +12,20 @@ const baseDN = process.env.BASE_DN
 export const authOptions: NextAuthOptions = {
   providers: [
     Credentials({
-      name: 'LDAP',
+      name: 'Acc',
       credentials: {
-        username: { label: 'Account', type: 'text', placeholder: '' },
-        password: { label: 'Password', type: 'password' }
+        username: { label: 'Tài khoản', type: 'text', placeholder: '' },
+        password: { label: 'Mật khẩu', type: 'password' }
       },
       async authorize(credentials) {
         const { username, password } = credentials
 
-        const user = await db.staff.findUnique({
+        const user = await db.nhanVien.findUnique({
           where: {
-            username
+            taikhoan: username
           }
         })
-        if (user?.username === username && user?.password === password) {
+        if (user?.taikhoan === username && user?.matkhau === password) {
           return Promise.resolve(user)
         } else {
           return Promise.resolve(null)

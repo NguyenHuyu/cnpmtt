@@ -1,9 +1,7 @@
 import { getServerSession } from 'next-auth'
-import Container from './_components/containner'
-import Navbar from './_components/navbar'
-import Sidebar from './_components/sidebar'
 import { authOptions } from '@/lib/authOption'
 import { redirect } from 'next/navigation'
+import Aside from '@/components/Aside'
 
 export default async function Browse_Layout({
   children
@@ -13,14 +11,12 @@ export default async function Browse_Layout({
   const session = await getServerSession(authOptions)
 
   if (!session) redirect('/api/auth/signin')
-
   return (
-    <>
-      <Navbar />
-      <div className='flex h-full pt-20'>
-        <Sidebar />
-        <Container>{children}</Container>
+    <div className='flex'>
+      <div>
+        <Aside />
       </div>
-    </>
+      <div className='flex-1 px-[30px]'>{children}</div>
+    </div>
   )
 }

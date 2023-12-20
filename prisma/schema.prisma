@@ -9,183 +9,128 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Staff {
-  id         String     @id @default(uuid())
-  username   String
-  staffID Int @unique
-  password   String
-  imageUrl   String
-  bio        String?
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  // Thêm quan hệ ngược từ Staff đến Booking
-  bookings   Booking_Detail[]
-
+// Nhan vien
+model NhanVien {
+  id             Int     @id @default(autoincrement())
+  taikhoan       String    @unique
+  matkhau       String
+  ho      String?
+  ten       String?
+  diachi        String?
+  sdt    String?
+  ngaytao      DateTime  @default(now())
+  ngayupdate      DateTime  @updatedAt
+  dsphieuthue PhieuThuePhong[]
+  dshoadon HoaDon[]
 }
 
-model Booking {
-  id                String            @id @default(uuid())
-  bookingID         String            @unique
-  customer          Customer          @relation(fields: [customerID], references: [id])
-  customerID        String
-
-  booking_detail    Booking_Detail[]
-  bill              Bill []
-  createdAt         DateTime          @default(now())
-  updatedAt         DateTime          @updatedAt
+// Loai phong
+model LoaiPhong{
+  id           Int        @id @default(autoincrement())
+  tenloaiphong String 
+  dientich        String
+  gia       String
+  dsphong Phong[]
 }
 
-model Booking_Detail {
-  id                 Int      @id @default(autoincrement())
-  booking            Booking             @relation(fields: [bookingID], references: [id])
-  bookingID          String
+// Phong
+model Phong{
+id             Int        @id @default(autoincrement())
+maphong   String
+loaiphong LoaiPhong @relation(fields: [maloaiphong], references: [id])
+maloaiphong Int
+songuoi String
+trangthai String
+dsphieuthuephong PhieuThuePhong[]
+} 
 
-  room               Room                @relation(fields: [roomID], references: [id])
-  roomID             String
-
-  staff             Staff             @relation(fields: [staffID], references: [id])
-  staffID           String
-
-  rent_type          Rent_Type           @relation(fields: [rentTypeID], references: [id])
-  rentTypeID       Int
-
-  service          Service           @relation(fields: [serviceID], references: [id])
-  serviceID       Int
-
-
-
-  comment           String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model LoaiDichVu{
+  id           Int        @id @default(autoincrement())
+  tenloaidichvu String 
+  dsdichvu DichVu[]
 }
 
+// Phong
+model DichVu{
+id             Int        @id @default(autoincrement())
+madichvu   String
+loaidichvu LoaiDichVu @relation(fields: [maloaidichvu], references: [id])
+maloaidichvu Int
+trangthai String
+dschitietthuedichvu ChiTietThueDichVu[]
+} 
 
-model Service_Type {
-  id         Int    @unique
-  serviceTypeID   String @unique
-  name   String
-  service    Service[]
 
-}
-
-model Service {
-  id         Int    @unique
-  serviceID   String @unique
-  name   String
-  price  Int
-  service_type    Service_Type @relation(fields: [serviceTypeID], references: [id])
-  serviceTypeID   Int
-  booking_detail    Booking_Detail[]
+model ChiTietThueDichVu{
+  id             Int        @id @default(autoincrement())
+  dichvu DichVu @relation(fields: [madichvu], references: [id])
+  madichvu Int
+   phieuthuephong PhieuThuePhong @relation(fields: [maphieuthue], references: [id])
+  maphieuthue Int
 }
 
 
 
-model Rent_Type {
-  id         Int    @unique
-  rentTypeID   String @unique
-  name   String
-  book_detail    Booking_Detail[]
+model KhachHang{
+  id             Int        @id @default(autoincrement())
+  tenkhachhang String
+  cmnd String
+  sdt String
+  diachi String 
+  quocgia String
+  dsphieuthue PhieuThuePhong[]
+  hoadon HoaDon?
+}
+model PhieuThuePhong{
+   id             Int        @id @default(autoincrement())
+  dschitietthuedichvu ChiTietThueDichVu[]
+  ghichu String
+  khachHang KhachHang @relation(fields: [makhachhang], references: [id])
+  makhachhang Int
+   nhanVien NhanVien @relation(fields: [manhanvien], references: [id])
+  manhanvien Int
+   phong Phong @relation(fields: [maphong], references: [id])
+  maphong Int
+  trangthai String
+  ngaybatdauo DateTime   @default(now())
+  giobatdauo String
+  ngaytraphong DateTime   @default(now())
+  giotraphong String
+  songuoi String
+   hoadon HoaDon?
 }
 
-model Room_Type{
-  id         Int    @unique
-  roomType   String
-  roomPrice  Int
-  area       Int
-  room        Room[]
+model HoaDon{
+  id             Int        @id @default(autoincrement())
+  nhanVien NhanVien @relation(fields: [manhanvien], references: [id])
+  manhanvien Int
+  phieuThuePhong   PhieuThuePhong @relation(fields: [maphieuthue], references: [id])
+  maphieuthue Int  @unique
+  hinhthucthanhtoan String
+  ghichu String
+  khachHang   KhachHang @relation(fields: [makhachhang], references: [id])
+  makhachhang Int  @unique
+  songaythue String
+  tonggiatien String
+  dathanhtoan Boolean
+  chitietbaocao ChiTietBaoCao[]
 }
 
-model Room {
-  id         String     @id @default(uuid())  @unique
-  roomID     Int        @unique
-  roomName   String
-
-  room_type             Room_Type @relation(fields: [room_type_ID], references: [id])
-  room_type_ID           Int
-
-  booking_detail        Booking_Detail[]
-
-
-
-  status  String?
+model BaoCao{
+id             Int        @id @default(autoincrement())
+chitietbaocao ChiTietBaoCao[]
 }
 
-
-model Customer {
-  id         String     @id @default(uuid())  @unique
-  username   String
-  citizenID  String
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  // Thêm quan hệ ngược từ Customer đến Booking
-  bookings   Booking[]
+model ChiTietBaoCao{
+id             Int        @id @default(autoincrement())
+baoCao BaoCao @relation(fields: [mabaocao], references: [id])
+  mabaocao Int
+  hoaDon HoaDon @relation(fields: [mahoadon], references: [id])
+  mahoadon Int
 }
 
-model Bill_Detail{
-  id            Int      @id @default(autoincrement())
-  bill            Bill      @relation(fields: [billID], references: [id])
-  billID          String
-
-  total          Int
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model QuyDinh{
+  id             Int        @id @default(autoincrement())
+  dahuy Boolean
+  phantramphuthu String
 }
-
-
-model Bill {
-  id         String     @id @default(uuid())  @unique
-  billID     String     @unique
-
-  booking    Booking    @relation(fields: [bookingID], references: [id])
-  bookingID  String
-
-  cash     String
-  comment  String?
-
-  bill_detail Bill_Detail[]
-  report_detail  Report_Detail[]
-
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-}
-
-
-model Report_Detail{
-  id            Int      @id @default(autoincrement())
-
-  report            Report      @relation(fields: [reportID], references: [id])
-  reportID          String
-
-    bill            Bill      @relation(fields: [billID], references: [id])
-  billID          String
-
-  spring          Int
-
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Report_Type {
-  id         Int    @unique
-  reportTypeID   String @unique
-  name   String
-  report        Report[]
-}
-
-
-model Report {
-  id         String     @id @default(uuid())  @unique
-  turnover Int
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
-
-  report_type Report_Type @relation(fields: [reportTypeID], references: [id])
-  reportTypeID Int
-  report_detail Report_Detail[]
-}
-
-
