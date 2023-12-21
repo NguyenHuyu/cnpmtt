@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import AuthProviders from '@/providers/AuthProvider'
 import { ReduxProvider } from '@/redux/ReduxProvider'
+import { Providers } from './providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -19,16 +20,18 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthProviders>
-      <html lang='en'>
-        <ReduxProvider>
-          <body className={inter.className}>
-            <ThemeProvider attribute='class' storageKey='streaming'>
-              {children}
-            </ThemeProvider>
-          </body>
-        </ReduxProvider>
-      </html>
-    </AuthProviders>
+    <html lang='en'>
+      <body className={inter.className}>
+        <AuthProviders>
+          <ReduxProvider>
+            <Providers>
+              <ThemeProvider attribute='class' storageKey='streaming'>
+                {children}
+              </ThemeProvider>
+            </Providers>
+          </ReduxProvider>
+        </AuthProviders>
+      </body>
+    </html>
   )
 }

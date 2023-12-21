@@ -1,11 +1,18 @@
+import { nextui } from '@nextui-org/react'
 /** @type {import('tailwindcss').Config} */
+// tailwind.config.js
 module.exports = {
   darkMode: ['class'],
   content: [
     './pages/**/*.{ts,tsx}',
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}'
+    './src/**/*.{ts,tsx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    // single component styles
+    './node_modules/@nextui-org/theme/dist/components/button.js',
+    // or you can use a glob pattern (multiple component styles)
+    './node_modules/@nextui-org/theme/dist/components/(button|snippet|code|input).js'
   ],
   theme: {
     container: {
@@ -72,5 +79,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require('tailwindcss-animate')]
+  plugins: [require('tailwindcss-animate'), nextui()]
 }

@@ -10,39 +10,37 @@ export const typeRoomApi = createApi({
 
   endpoints: (build) => ({
     gettypeRooms: build.query<any, { dataQuery: string }>({
-      query: ({ dataQuery }) => `/api/typeRoom${dataQuery}`,
+      query: ({ dataQuery }) => `/daa/room-type${dataQuery}`,
       providesTags: ['typeRoom']
     }),
     gettypeRoom: build.query<any, string>({
-      query: (id) => `/daa/typeRoom/${id}`,
+      query: (id) => `/daa/room-type?id=${id}`,
       providesTags: ['typeRoom']
     }),
     addtypeRoom: build.mutation<any, string>({
       query(body) {
         return {
-          url: '/daa/typeRoom',
+          url: '/daa/room-type',
           method: 'POST',
           body: body
         }
       },
       invalidatesTags: ['typeRoom']
     }),
-    updatetypeRoom: build.mutation<any, { id: string; body: Omit<any, 'id'> }>(
-      {
-        query(body) {
-          return {
-            url: `/daa/typeRoom/${body.id}`,
-            method: 'PUT',
-            body: body.body
-          }
-        },
-        invalidatesTags: ['typeRoom']
-      }
-    ),
+    updatetypeRoom: build.mutation<any, { id: string; body: Omit<any, 'id'> }>({
+      query(body) {
+        return {
+          url: `/daa/room-type?id=${body.id}`,
+          method: 'PUT',
+          body: body.body
+        }
+      },
+      invalidatesTags: ['typeRoom']
+    }),
     deletetypeRoom: build.mutation({
       query(id) {
         return {
-          url: `/daa/typeRoom/${id}`,
+          url: `/daa/room-type?id=${id}`,
           method: 'DELETE'
         }
       },
@@ -53,6 +51,7 @@ export const typeRoomApi = createApi({
 
 export const {
   useGettypeRoomsQuery,
+  useGettypeRoomQuery,
   useAddtypeRoomMutation,
   useUpdatetypeRoomMutation,
   useDeletetypeRoomMutation
