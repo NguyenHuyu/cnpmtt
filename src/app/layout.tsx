@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import { ThemeProvider } from '@/components/theme-provider'
 import './globals.css'
 import AuthProviders from '@/providers/AuthProvider'
+import { ReduxProvider } from '@/redux/ReduxProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,14 +19,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <AuthProviders>
-      <html lang='en'>
-        <body className={inter.className}>
-          <ThemeProvider attribute='class' storageKey='streaming'>
-            {children}
-          </ThemeProvider>
-        </body>
-      </html>
-    </AuthProviders>
+    <html lang='en'>
+      <body className={inter.className}>{children}</body>
+    </html>
   )
 }

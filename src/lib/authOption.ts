@@ -20,12 +20,12 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials) {
         const { username, password } = credentials
 
-        const user = await db.staff.findUnique({
+        const user = await db.nhanVien.findUnique({
           where: {
-            username
+            taikhoan: username
           }
         })
-        if (user?.username === username && user?.password === password) {
+        if (user?.taikhoan === username && user?.matkhau === password) {
           return Promise.resolve(user)
         } else {
           return Promise.resolve(null)

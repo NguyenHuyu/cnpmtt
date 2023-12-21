@@ -2,7 +2,6 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  relationMode = "prisma"
 }
 
 
@@ -10,12 +9,128 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Staff {
-  id             String    @id @default(uuid())
-  username       String    @unique
-  password       String
-  imageUrl       String
-  bio            String?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+// Nhan vien
+model NhanVien {
+  id             Int     @id @default(autoincrement())
+  taikhoan       String    @unique
+  matkhau       String
+  ho      String?
+  ten       String?
+  diachi        String?
+  sdt    String?
+  ngaytao      DateTime  @default(now())
+  ngayupdate      DateTime  @updatedAt
+  dsphieuthue PhieuThuePhong[]
+  dshoadon HoaDon[]
+}
+
+// Loai phong
+model LoaiPhong{
+  id           Int        @id @default(autoincrement())
+  tenloaiphong String
+  dientich        String
+  gia       String
+  dsphong Phong[]
+}
+
+// Phong
+model Phong{
+id             Int        @id @default(autoincrement())
+maphong   String
+loaiphong LoaiPhong @relation(fields: [maloaiphong], references: [id])
+maloaiphong Int
+songuoi String
+trangthai String
+dsphieuthuephong PhieuThuePhong[]
+}
+
+model LoaiDichVu{
+  id           Int        @id @default(autoincrement())
+  tenloaidichvu String
+  dsdichvu DichVu[]
+}
+
+// Phong
+model DichVu{
+id             Int        @id @default(autoincrement())
+madichvu   String
+loaidichvu LoaiDichVu @relation(fields: [maloaidichvu], references: [id])
+maloaidichvu Int
+trangthai String
+dschitietthuedichvu ChiTietThueDichVu[]
+}
+
+
+model ChiTietThueDichVu{
+  id             Int        @id @default(autoincrement())
+  dichvu DichVu @relation(fields: [madichvu], references: [id])
+  madichvu Int
+   phieuthuephong PhieuThuePhong @relation(fields: [maphieuthue], references: [id])
+  maphieuthue Int
+}
+
+
+
+model KhachHang{
+  id             Int        @id @default(autoincrement())
+  tenkhachhang String
+  cmnd String
+  sdt String
+  diachi String
+  quocgia String
+  dsphieuthue PhieuThuePhong[]
+  hoadon HoaDon?
+}
+model PhieuThuePhong{
+   id             Int        @id @default(autoincrement())
+  dschitietthuedichvu ChiTietThueDichVu[]
+  ghichu String
+  khachHang KhachHang @relation(fields: [makhachhang], references: [id])
+  makhachhang Int
+   nhanVien NhanVien @relation(fields: [manhanvien], references: [id])
+  manhanvien Int
+   phong Phong @relation(fields: [maphong], references: [id])
+  maphong Int
+  trangthai String
+  ngaybatdauo DateTime   @default(now())
+  giobatdauo String
+  ngaytraphong DateTime   @default(now())
+  giotraphong String
+  songuoi String
+   hoadon HoaDon?
+}
+
+model HoaDon{
+  id             Int        @id @default(autoincrement())
+  nhanVien NhanVien @relation(fields: [manhanvien], references: [id])
+  manhanvien Int
+  phieuThuePhong   PhieuThuePhong @relation(fields: [maphieuthue], references: [id])
+  maphieuthue Int  @unique
+  hinhthucthanhtoan String
+  ghichu String
+  khachHang   KhachHang @relation(fields: [makhachhang], references: [id])
+  makhachhang Int  @unique
+  songaythue String
+  tonggiatien String
+  dathanhtoan Boolean
+  chitietbaocao ChiTietBaoCao[]
+}
+
+model BaoCao{
+id             Int        @id @default(autoincrement())
+chitietbaocao ChiTietBaoCao[]
+}
+
+model ChiTietBaoCao{
+id             Int        @id @default(autoincrement())
+baoCao BaoCao @relation(fields: [mabaocao], references: [id])
+  mabaocao Int
+  hoaDon HoaDon @relation(fields: [mahoadon], references: [id])
+  mahoadon Int
+}
+
+model QuyDinh{
+  id             Int        @id @default(autoincrement())
+  dahuy Boolean
+  phantramphuthu String
 }
