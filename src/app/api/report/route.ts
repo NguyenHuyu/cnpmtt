@@ -1,10 +1,20 @@
 import { db } from '@/lib/database'
 import { NextRequest } from 'next/server'
 
-export async function GET() {
-  const users = await db.baoCao.findMany()
-
-  return Response.json(users)
+export async function GET(request: NextRequest) {
+  const searchParams = request.nextUrl.searchParams
+  const query = searchParams.get('id')
+  if (query) {
+    const data = await db.baoCao.findUnique({
+      where: {
+        id: Number(query)
+      }
+    })
+    return Response.json(data)
+  } else {
+    const users = await db.baoCao.findMany()
+    return Response.json(users)
+  }
 }
 
 export async function POST(request: Request) {
