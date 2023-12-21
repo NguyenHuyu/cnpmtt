@@ -1,12 +1,15 @@
-
+'use client'
 import React from 'react'
+import TableDichVu from '@/components/DichVu/TableDichVu'
+const Page = () => {
 
-const page = () => {
   return (
-    <div>
-      trang ql phong ne
-    </div>
+    <>
+      <h1 className='pt-[20px] text-center  '>Quản Lý Khách Hàng</h1>
+      <div className='h-[30px]' />
+      <TableDichVu />
+    </>
   )
 }
 
-export default page
+export default Page

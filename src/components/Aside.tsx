@@ -266,7 +266,7 @@ export const Aside = () => {
             {/*  */}
             <li>
               <Link
-                href='/ql-baocao'
+                href='/ql-khachhang'
                 className='flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group'
               >
                 <svg
@@ -307,7 +307,7 @@ export const Aside = () => {
                 <span className='flex-1 ms-3 text-left rtl:text-right whitespace-nowrap'>
                   Quản lý dịch vụ
                 </span>
-                {!openQlPhong ? (
+                {!openQlDichvu ? (
                   <svg
                     className='w-3 h-3'
                     aria-hidden='true'
@@ -345,7 +345,7 @@ export const Aside = () => {
                 <ul id='dropdown-example' className=' block py-2 space-y-2'>
                   <li>
                     <Link
-                      href='/ql-phong'
+                      href='/ql-dichvu'
                       className='flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     >
                       Dịch vụ
@@ -353,7 +353,7 @@ export const Aside = () => {
                   </li>
                   <li>
                     <Link
-                      href='/ql-loaiphong'
+                      href='/ql-loaidichvu'
                       className='flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     >
                       Loại dịch vụ
