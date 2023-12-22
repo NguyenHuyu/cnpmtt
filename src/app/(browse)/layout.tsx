@@ -9,7 +9,6 @@ export default async function Browse_Layout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(authOptions)
-
   if (!session) redirect('/api/auth/signin')
   return (
     <div className='flex'>

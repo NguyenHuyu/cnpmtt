@@ -2,42 +2,46 @@
 import React, { useEffect } from 'react'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import {
-  useAddCustomerMutation,
-  useGetCustomerQuery,
-  useUpdateCustomerMutation
+  useAddServiceMutation,
+  useGetServiceQuery,
+  useUpdateServiceMutation,
+  useGetServiceTypesQuery
 } from '@/redux/exportModule'
 import {
   showErrorNotification,
   showSuccessNotification
 } from '@/lib/notifications'
+
+
 interface IFormInput {
   id?: number
-  tenkhachhang: string
-  cmnd: string
-  sdt: string
-  diachi: string
-  quocgia: string
+  madichvu: string
+  maloaidichvu: number
+  trangthai: string
+  gia: string
 }
 const Formtaodichvu = ({ id }: any) => {
   const { register, handleSubmit, reset, setValue } = useForm<IFormInput>()
-  const [addCustomer] = useAddCustomerMutation()
-  const [updateCustomer] = useUpdateCustomerMutation()
-  const { data: dataCustomer } = useGetCustomerQuery(id, { skip: !id })
-  console.log('dataTypeRoom', dataCustomer)
+  const [addService] = useAddServiceMutation()
+  const [updateService] = useUpdateServiceMutation()
+  const { data: dataService } = useGetServiceQuery(id, { skip: !id })
+  const { data: dataServiceTypes } = useGetServiceTypesQuery({ dataQuery: '' })
+  console.log('dataService', dataService)
 
   useEffect(() => {
-    if (dataCustomer) {
-      Object.entries(dataCustomer as any).forEach(([key, value]) => {
+    if (dataService) {
+      Object.entries(dataService as any).forEach(([key, value]) => {
         setValue(key as any, value)
       })
     }
-  }, [dataCustomer, setValue])
+  }, [dataService, setValue])
 
   const onSubmit = async (data: any) => {
     const { id, ...formData } = data
+    formData.maloaidichvu = Number(data.maloaidichvu)
     console.log(id)
     if (id) {
-      await updateCustomer({
+      await updateService({
         body: formData,
         id
       })
@@ -49,7 +53,7 @@ const Formtaodichvu = ({ id }: any) => {
           showErrorNotification(error.data?.message)
         })
     } else {
-      await addCustomer(formData)
+      await addService(formData)
         .unwrap()
         .then(() => {
           showSuccessNotification('Thêm thành công')
@@ -69,13 +73,13 @@ const Formtaodichvu = ({ id }: any) => {
           htmlFor='tenloaiphong'
           className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
         >
-          Tên khách hàng
+          Tên dịch vụ
         </label>
         <input
           type='tenloaiphong'
           id='tenloaiphong'
           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('tenkhachhang', { required: true })}
+          {...register('madichvu', { required: true })}
         />
       </div>
       <div className='mb-5'>
@@ -83,57 +87,53 @@ const Formtaodichvu = ({ id }: any) => {
           htmlFor='dientich'
           className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
         >
-          Cmnd
+          Loại dịch vụ
         </label>
-        <input
-          type='dientich'
-          id='dientich'
-          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('cmnd', { required: true })}
-        />
+        {dataServiceTypes && (
+          <select
+            {...register('maloaidichvu')}
+            className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+          >
+            {dataServiceTypes.map((data: any) => {
+              return (
+                <option key={data.id} value={data.id}>
+                  {data.tenloaidichvu}
+                </option>
+              )
+            })}
+          </select>
+        )}
       </div>
       <div className='mb-5'>
         <label
           htmlFor='gia'
           className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
         >
-          Sdt
+          Trạng thái
         </label>
-        <input
-          type='gia'
-          id='gia'
+        <select
           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('sdt', { required: true })}
-        />
+          {...register('trangthai', { required: true })}
+        >
+          <option value={'Hoàn thành'}>Hoàn thành</option>
+          <option value={'Đã hủy'}>Đã Hủy</option>
+        </select>
       </div>
       <div className='mb-5'>
         <label
           htmlFor='gia'
           className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
         >
-          Địa chỉ
+          Giá
         </label>
         <input
           type='gia'
           id='gia'
           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('diachi', { required: true })}
+          {...register('gia', { required: true })}
         />
       </div>
-      <div className='mb-5'>
-        <label
-          htmlFor='gia'
-          className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-        >
-          Quốc gia
-        </label>
-        <input
-          type='gia'
-          id='gia'
-          className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('quocgia', { required: true })}
-        />
-      </div>
+
       <button
         type='submit'
         className='text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'

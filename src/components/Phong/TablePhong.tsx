@@ -16,6 +16,7 @@ import {
 } from '@/lib/notifications'
 import Formtaophong from './Formtaophong'
 import { Spinner } from '@nextui-org/react'
+import DetailsLoaiPhong from '../Details/DetailsLoaiPhong'
 
 const TablePhong = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
@@ -44,7 +45,7 @@ const TablePhong = () => {
         showSuccessNotification('Xóa thành công')
       })
       .catch((error: any) => {
-        showErrorNotification(error.data?.message)
+        showErrorNotification(`Lỗi: ${error.status}`)
       })
   }
   return (
@@ -141,7 +142,7 @@ const TablePhong = () => {
                     >
                       {item.tenphong}
                     </th>
-                    <td className='px-6 py-4'>{item.maloaiphong}</td>
+                    <td className='px-6 py-4'><DetailsLoaiPhong id={item.maloaiphong} field="tenloaiphong"/></td>
                     <td className='px-6 py-4'>{item.songuoi}</td>
                     <td className='px-6 py-4'>{item.trangthai}</td>
                     <td className='px-6 py-4'>

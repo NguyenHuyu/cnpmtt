@@ -46,7 +46,7 @@ const TableLoaiDichVu = () => {
         showSuccessNotification('Xóa thành công')
       })
       .catch((error: any) => {
-        showErrorNotification(error.data?.message)
+        showErrorNotification(`Lỗi: ${error.status}`)
       })
   }
   return (

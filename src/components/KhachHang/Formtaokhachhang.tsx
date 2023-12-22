@@ -127,12 +127,16 @@ const Formtaokhachhang = ({ id }: any) => {
         >
           Quốc gia
         </label>
-        <input
-          type='gia'
-          id='gia'
+        <select
+          {...register('quocgia')}
           className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-          {...register('quocgia', { required: true })}
-        />
+        >
+          <option value={'Việt Nam'}>Việt Nam</option>
+          <option value={'Lào'}>Lào</option>
+          <option value={'Campuchia'}>Campuchia</option>
+          <option value={'Úc'}>Úc</option>
+          <option value={'Mỹ'}>Mỹ</option>
+        </select>
       </div>
       <button
         type='submit'

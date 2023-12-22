@@ -19,10 +19,11 @@ import {
 } from '@/lib/notifications'
 import Formtaodichvu from './Formtaodichvu'
 import { Spinner } from '@nextui-org/react'
+import DetailsLoaiDichVu from '../Details/DetilsLoaiDichVu'
 
 const TableDichVu = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { data: dataServices, isFetching: isFetchingDataTypeRooms } =
+  const { data: dataServices, isFetching: isFetchingDataServices } =
     useGetServicesQuery({ dataQuery: '' })
   const [deleteServices] = useDeleteServiceMutation()
   const [idTypeRoom, setIdTypeRoom]: any = useState(undefined)
@@ -31,7 +32,7 @@ const TableDichVu = () => {
   useEffect(() => {
     if (inputSearch != '') {
       const filterData = dataServices.filter((data: any) => {
-        return data.tendichvu.includes(inputSearch)
+        return data.madichvu.includes(inputSearch)
       })
       setData(filterData)
     } else {
@@ -46,7 +47,7 @@ const TableDichVu = () => {
         showSuccessNotification('Xóa thành công')
       })
       .catch((error: any) => {
-        showErrorNotification(error.data?.message)
+        showErrorNotification(`Lỗi: ${error.status}`)
       })
   }
   return (
@@ -64,7 +65,7 @@ const TableDichVu = () => {
         {/* search */}
         <div className='w-[700px]'>
           <label className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'>
-            Search
+            Tìm
           </label>
           <div className='relative'>
             <div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>
@@ -102,7 +103,7 @@ const TableDichVu = () => {
         </div>
       </div>
       {/* table */}
-      {isFetchingDataTypeRooms ? (
+      {isFetchingDataServices ? (
         <div className='w-[100px] mx-auto mt-[100px]'>
           {' '}
           <Spinner />
@@ -112,14 +113,18 @@ const TableDichVu = () => {
           <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
               <th scope='col' className='px-6 py-3'>
-                Mã dịch vụ
+                Tên dịch vụ
               </th>
               <th scope='col' className='px-6 py-3'>
-                Mã loại dịch vụ
+                Loại dịch vụ
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Giá
               </th>
               <th scope='col' className='px-6 py-3'>
                 Trạng thái
               </th>
+
               <th scope='col' className='px-6 py-3'>
                 Tùy chọn
               </th>
@@ -140,7 +145,13 @@ const TableDichVu = () => {
                     >
                       {item.madichvu}
                     </th>
-                    <td className='px-6 py-4'>{item.maloaidichvu}</td>
+                    <td className='px-6 py-4'>
+                      <DetailsLoaiDichVu
+                        id={item.maloaidichvu}
+                        field='tenloaidichvu'
+                      />
+                    </td>
+                    <td className='px-6 py-4'>{item.gia}</td>
                     <td className='px-6 py-4'>{item.trangthai}</td>
                     <td className='px-6 py-4'>
                       <span
