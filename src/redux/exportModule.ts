@@ -71,7 +71,7 @@ import {
   useUpdateServiceMutation,
   useDeleteServiceMutation
 } from '@/redux/createApi/service'
-
+import { useGetstaffQuery } from './createApi/staff'
 // export api
 export {
   useGetBillsQuery,
@@ -123,5 +123,6 @@ export {
   useGetServiceQuery,
   useAddServiceMutation,
   useUpdateServiceMutation,
-  useDeleteServiceMutation
+  useDeleteServiceMutation,
+  useGetstaffQuery
 }

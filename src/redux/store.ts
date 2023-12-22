@@ -11,6 +11,7 @@ import { roomApi } from './createApi/room'
 import { serviceDetailApi } from './createApi/service-detail'
 import { serviceTypeApi } from './createApi/service-type'
 import { serviceApi } from './createApi/service'
+import { staffApi } from './createApi/staff'
 
 export const store = configureStore({
   reducer: {
@@ -24,7 +25,8 @@ export const store = configureStore({
     [roomApi.reducerPath]: roomApi.reducer,
     [serviceDetailApi.reducerPath]: serviceDetailApi.reducer,
     [serviceTypeApi.reducerPath]: serviceTypeApi.reducer,
-    [serviceApi.reducerPath]: serviceApi.reducer
+    [serviceApi.reducerPath]: serviceApi.reducer,
+    [staffApi.reducerPath]: staffApi.reducer
   },
   // Adding the api middleware enables caching, invalidation, polling,
   // and other useful features of `rtk-query`.
@@ -39,7 +41,8 @@ export const store = configureStore({
       roomApi.middleware,
       serviceDetailApi.middleware,
       serviceTypeApi.middleware,
-      serviceApi.middleware
+      serviceApi.middleware,
+      staffApi.middleware
     )
 })
 

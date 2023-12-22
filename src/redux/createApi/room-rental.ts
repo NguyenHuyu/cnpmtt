@@ -17,7 +17,7 @@ export const roomRentalApi = createApi({
       query: (id) => `/daa/room-rental?id=${id}`,
       providesTags: ['roomRental']
     }),
-    addRoomRental: build.mutation<any, string>({
+    addRoomRental: build.mutation<any, any>({
       query(body) {
         return {
           url: '/daa/room-rental',
@@ -27,7 +27,7 @@ export const roomRentalApi = createApi({
       },
       invalidatesTags: ['roomRental']
     }),
-    updateRoomRental: build.mutation<any, { id: string; body: Omit<any, 'id'> }>({
+    updateRoomRental: build.mutation<any, any>({
       query(body) {
         return {
           url: `/daa/room-rental?id=${body.id}`,

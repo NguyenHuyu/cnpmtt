@@ -26,7 +26,7 @@ export const authOptions: NextAuthOptions = {
           }
         })
         if (user?.taikhoan === username && user?.matkhau === password) {
-          return Promise.resolve(user)
+          return Promise.resolve({ username: user?.id })
         } else {
           return Promise.resolve(null)
         }
@@ -50,10 +50,8 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }: any) {
       return {
-        user: {
-          session,
-          token
-        }
+        ...session,
+        token
       }
     }
   }
