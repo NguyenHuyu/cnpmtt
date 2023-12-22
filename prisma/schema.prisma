@@ -37,7 +37,7 @@ model LoaiPhong{
 // Phong
 model Phong{
 id             Int        @id @default(autoincrement())
-maphong   String
+tenphong   String
 loaiphong LoaiPhong @relation(fields: [maloaiphong], references: [id])
 maloaiphong Int
 songuoi String
@@ -58,6 +58,7 @@ madichvu   String
 loaidichvu LoaiDichVu @relation(fields: [maloaidichvu], references: [id])
 maloaidichvu Int
 trangthai String
+gia String
 dschitietthuedichvu ChiTietThueDichVu[]
 } 
 

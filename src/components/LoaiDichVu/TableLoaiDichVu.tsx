@@ -1,8 +1,8 @@
 'use client'
 import React, { useEffect, useState } from 'react'
 import {
-  useGetCustomersQuery,
-  useDeleteCustomerMutation
+  useGetServiceTypesQuery,
+  useDeleteServiceTypeMutation
 } from '@/redux/exportModule'
 import {
   Modal,
@@ -17,30 +17,30 @@ import {
   showErrorNotification,
   showSuccessNotification
 } from '@/lib/notifications'
-import Formtaokhachhang from './Formtaokhachhang'
+import Formtaoloaidichvu from './Formtaoloaidichvu'
 import { Spinner } from '@nextui-org/react'
 
-const TableKhachHang = () => {
+const TableLoaiDichVu = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { data: dataCustomers, isFetching: isFetchingDataTypeRooms } =
-    useGetCustomersQuery({ dataQuery: '' })
-  const [deleteCustomers] = useDeleteCustomerMutation()
-  const [idTypeRoom, setIdTypeRoom]: any = useState(undefined)
+  const { data: dataServiceTypes, isFetching: isFetchingServiceTypes } =
+    useGetServiceTypesQuery({ dataQuery: '' })
+  const [deleteServiceType] = useDeleteServiceTypeMutation()
+  const [idServiceTypes, setIdServiceTypes]: any = useState(undefined)
   const [inputSearch, setInputSearch] = useState('')
   const [data, setData]: any = useState(undefined)
   useEffect(() => {
     if (inputSearch != '') {
-      const filterData = dataCustomers.filter((data: any) => {
-        return data.tenkhachhang.includes(inputSearch)
+      const filterData = dataServiceTypes.filter((data: any) => {
+        return data.tenloaidichvu.includes(inputSearch)
       })
       setData(filterData)
     } else {
-      setData(dataCustomers)
+      setData(dataServiceTypes)
     }
-  }, [inputSearch, dataCustomers])
+  }, [inputSearch, dataServiceTypes])
   //
   const handleDel = async (id: any) => {
-    await deleteCustomers(id)
+    await deleteServiceType(id)
       .unwrap()
       .then(() => {
         showSuccessNotification('Xóa thành công')
@@ -54,12 +54,12 @@ const TableKhachHang = () => {
       <div className='flex gap-[60px] justify-center  items-center pr-[100px]'>
         <button
           onClick={() => {
-            setIdTypeRoom(undefined)
+            setIdServiceTypes(undefined)
             onOpen()
           }}
           className='text-white h-[40px] bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         >
-          Tạo khách hàng mới
+          Tạo loại dịch vụ mới
         </button>
         {/* search */}
         <div className='w-[700px]'>
@@ -102,7 +102,7 @@ const TableKhachHang = () => {
         </div>
       </div>
       {/* table */}
-      {isFetchingDataTypeRooms ? (
+      {isFetchingServiceTypes ? (
         <div className='w-[100px] mx-auto mt-[100px]'>
           {' '}
           <Spinner />
@@ -112,20 +112,9 @@ const TableKhachHang = () => {
           <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
               <th scope='col' className='px-6 py-3'>
-                Tên khách hàng
+                Tên loại dịch vụ
               </th>
-              <th scope='col' className='px-6 py-3'>
-                CMND
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Sdt
-              </th>
-              <th scope='col' className='px-6 py-3'>
-                Địa chỉ
-              </th>
-              <th scope='col' className='px-6 py-3'>
-               Quốc gia
-              </th>
+
               <th scope='col' className='px-6 py-3'>
                 Tùy chọn
               </th>
@@ -144,17 +133,14 @@ const TableKhachHang = () => {
                       scope='row'
                       className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                     >
-                      {item.tenkhachhang}
+                      {item.tenloaidichvu}
                     </th>
-                    <td className='px-6 py-4'>{item.cmnd}</td>
-                    <td className='px-6 py-4'>{item.sdt}</td>
-                    <td className='px-6 py-4'>{item.diachi}</td>
-                    <td className='px-6 py-4'>{item.quocgia}</td>
+
                     <td className='px-6 py-4'>
                       <span
                         className=' cursor-pointer'
                         onClick={() => {
-                          setIdTypeRoom(item.id)
+                          setIdServiceTypes(item.id)
                           onOpen()
                         }}
                       >
@@ -181,10 +167,10 @@ const TableKhachHang = () => {
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-                Form khách hàng
+                Form dịch vụ
               </ModalHeader>
               <ModalBody>
-                <Formtaokhachhang id={idTypeRoom} />
+                <Formtaoloaidichvu id={idServiceTypes} />
               </ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>
@@ -202,4 +188,4 @@ const TableKhachHang = () => {
   )
 }
 
-export default TableKhachHang
+export default TableLoaiDichVu

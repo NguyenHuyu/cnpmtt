@@ -17,7 +17,7 @@ export const roomApi = createApi({
       query: (id) => `/daa/room?id=${id}`,
       providesTags: ['room']
     }),
-    addRoom: build.mutation<any, string>({
+    addRoom: build.mutation<any, any>({
       query(body) {
         return {
           url: '/daa/room',
@@ -27,7 +27,7 @@ export const roomApi = createApi({
       },
       invalidatesTags: ['room']
     }),
-    updateRoom: build.mutation<any, { id: string; body: Omit<any, 'id'> }>({
+    updateRoom: build.mutation<any, any>({
       query(body) {
         return {
           url: `/daa/room?id=${body.id}`,

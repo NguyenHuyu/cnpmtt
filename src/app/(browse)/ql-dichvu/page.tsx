@@ -5,7 +5,7 @@ const Page = () => {
 
   return (
     <>
-      <h1 className='pt-[20px] text-center  '>Quản Lý Khách Hàng</h1>
+      <h1 className='pt-[20px] text-center  '>Quản Lý Dịch Vụ</h1>
       <div className='h-[30px]' />
       <TableDichVu />
     </>
