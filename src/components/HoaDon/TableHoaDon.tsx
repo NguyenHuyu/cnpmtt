@@ -155,7 +155,9 @@ const TableHoaDon = () => {
                     <td className='px-6 py-4'>{item.hinhthucthanhtoan}</td>
                     <td className='px-6 py-4'>{item.ghichu}</td>
                     <td className='px-6 py-4'>{item.songaythue}</td>
-                    <td className='px-6 py-4'>{item.tonggiatien.toFixed(0)}</td>
+                    <td className='px-6 py-4'>
+                      {Number(item.tonggiatien).toFixed(0)}
+                    </td>
                   </tr>
                 )
               })}
