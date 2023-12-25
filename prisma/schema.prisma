@@ -69,6 +69,7 @@ model ChiTietThueDichVu{
   madichvu Int
    phieuthuephong PhieuThuePhong @relation(fields: [maphieuthue], references: [id])
   maphieuthue Int
+  soluong Int
 }
 
 
@@ -94,14 +95,11 @@ model PhieuThuePhong{
    phong Phong @relation(fields: [maphong], references: [id])
   maphong Int
   trangthai String
-  ngaybatdauo DateTime   @default(now())
-  giobatdauo String
-  ngaytraphong DateTime   @default(now())
-  giotraphong String
+  ngaybatdauo DateTime  
+  ngaytraphong DateTime?   
   songuoi String
    hoadon HoaDon?
 }
-
 model HoaDon{
   id             Int        @id @default(autoincrement())
   nhanVien NhanVien @relation(fields: [manhanvien], references: [id])

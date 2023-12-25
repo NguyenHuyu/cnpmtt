@@ -23,20 +23,19 @@ interface IFormInput {
   makhachhang: number
   maphong: number
   manhanvien: number
-  ngaybatdauo: string
-  giobatdauo: string
-  ngaytraphong: string
-  giotraphong: string
+  ngaybatdauo: Date
+  ngaytraphong: any
   songuoi: string
   trangthai: string
 }
+import DetailsPhong from '../Details/DetailsPhong'
 const Formtaophieuthue = ({ id }: any) => {
   const { register, handleSubmit, reset, setValue } = useForm<IFormInput>()
   const [addRoomRental] = useAddRoomRentalMutation()
   const [updateRoomRental] = useUpdateRoomRentalMutation()
   const [dataPhongChuaThue, setDataPhongChuaThue]: any = useState(undefined)
   const { data: session, status }: any = useSession()
-  const { data: dataRoom } = useGetRoomRentalQuery(id, { skip: !id })
+  const { data: dataRoomRental } = useGetRoomRentalQuery(id, { skip: !id })
   const { data: dataTypeRooms } = useGettypeRoomsQuery({ dataQuery: '' })
   const { data: dataRooms } = useGetRoomsQuery({ dataQuery: '' })
   const { data: dataRoomRentals } = useGetRoomRentalsQuery({ dataQuery: '' })
@@ -47,16 +46,22 @@ const Formtaophieuthue = ({ id }: any) => {
   )
 
   useEffect(() => {
-    if (dataRoom) {
-      Object.entries(dataRoom as any).forEach(([key, value]) => {
-        setValue(key as any, value)
+    if (dataRoomRental) {
+      Object.entries(dataRoomRental as any).forEach(([key, value]) => {
+        if (key == 'ngaybatdauo') {
+          const time = new Date(value as any)
+          const dateTimeLocalString = time.toISOString().slice(0, 16)
+          setValue(key as any, dateTimeLocalString)
+        } else {
+          setValue(key as any, value)
+        }
       })
     }
-  }, [dataRoom, setValue])
+  }, [dataRoomRental, setValue])
 
   // loc ra phong chưa thuê
   useEffect(() => {
-    if (dataRooms && dataRooms) {
+    if (dataRooms && dataRoomRentals) {
       // ds phong dang thue
       const filterdataRoomRentals = dataRoomRentals.filter(
         (item: any) => item.trangthai == 'Đang thuê'
@@ -78,12 +83,12 @@ const Formtaophieuthue = ({ id }: any) => {
   const onSubmit = async (data: IFormInput) => {
     const { id, ...formData } = data
     formData.manhanvien = Number(dataStaff.id)
-    formData.giobatdauo = ''
-    formData.giotraphong = ''
     // formData.ngaytraphong = ''
     formData.makhachhang = Number(data.makhachhang)
     formData.maphong = Number(data.maphong)
-    console.log('data', formData)
+    const ngaybatdauo: Date = new Date(formData.ngaybatdauo)
+    formData.ngaybatdauo = ngaybatdauo
+    formData.trangthai = 'Đang thuê'
     if (id) {
       await updateRoomRental({
         body: formData,
@@ -106,7 +111,6 @@ const Formtaophieuthue = ({ id }: any) => {
         .catch((error: any) => {
           showErrorNotification(error.data?.message)
         })
-      //}
     }
   }
 
@@ -131,9 +135,9 @@ const Formtaophieuthue = ({ id }: any) => {
               htmlFor='tenloaiphong'
               className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
             >
-              Phòng còn trống
+              {!dataRoomRental ? 'Phòng còn trống' : 'Phòng'}
             </label>
-            {dataPhongChuaThue && (
+            {dataPhongChuaThue && !dataRoomRental && (
               <select
                 {...register('maphong')}
                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
@@ -146,6 +150,17 @@ const Formtaophieuthue = ({ id }: any) => {
                     </option>
                   )
                 })}
+              </select>
+            )}
+            {dataRoomRental && (
+              <select
+                {...register('maphong')}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                defaultValue={dataRoomRental.maphong}
+              >
+                <option value={dataRoomRental.maphong}>
+                  <DetailsPhong id={dataRoomRental.maphong} field='tenphong' />
+                </option>
               </select>
             )}
           </div>
@@ -165,7 +180,11 @@ const Formtaophieuthue = ({ id }: any) => {
                 {dataCustomers.map((data: any) => {
                   return (
                     <option key={data.id} value={data.id}>
-                      {data.tenkhachhang}
+                      {data.tenkhachhang} | Cmnd:{data.cmnd} | Loại khách:
+                      {data.quocgia == 'Việt Nam'
+                        ? 'Trong nước'
+                        : 'Nước ngoài'}{' '}
+                      ({data.quocgia})
                     </option>
                   )
                 })}
@@ -191,7 +210,7 @@ const Formtaophieuthue = ({ id }: any) => {
         <section id='2'>
           {/*
            */}
-          {/* <div className='mb-5'>
+          <div className='mb-5'>
             <label
               htmlFor='gia'
               className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
@@ -204,23 +223,24 @@ const Formtaophieuthue = ({ id }: any) => {
               className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               {...register('ngaybatdauo', { required: true })}
             />
-          </div> */}
+          </div>
           {/*
            */}
-          {/* <div className='mb-5'>
-            <label
-              htmlFor='gia'
-              className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Thời gian trả phòng
-            </label>
-            <input
-              type='gia'
-              id='gia'
-              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              {...register('songuoi', { required: true })}
-            />
-          </div> */}
+          {dataRoomRental && dataRoomRental.trangthai != 'Đang thuê' && (
+            <div className='mb-5'>
+              <label
+                htmlFor='gia'
+                className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Thời gian trả phòng
+              </label>
+              <input
+                type='datetime-local'
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                {...register('ngaytraphong', { required: true })}
+              />
+            </div>
+          )}
           {/*
            */}
           <div className='mb-5'>
@@ -238,23 +258,25 @@ const Formtaophieuthue = ({ id }: any) => {
             />
           </div>
 
-          <div className={!id ? 'hidden mb-5' : 'block mb-5'}>
-            <label
-              htmlFor='gia'
-              className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
-            >
-              Trạng thái
-            </label>
-            <select
-              {...register('trangthai')}
-              className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-            >
-              <option value={'Đang thuê'}>Đang thuê</option>
-              <option value={'Đã trả phòng - Chưa thanh toán'}>
-                Đã trả phòng - Chưa thanh toán
-              </option>
-            </select>
-          </div>
+          {dataRoomRental && (
+            <div className={!id ? 'hidden mb-5' : 'block mb-5'}>
+              <label
+                htmlFor='gia'
+                className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
+              >
+                Trạng thái
+              </label>
+              <select
+                {...register('trangthai')}
+                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                defaultValue='Đang thuê'
+              >
+                <option value={dataRoomRental.trangthai}>
+                  {dataRoomRental.trangthai}
+                </option>
+              </select>
+            </div>
+          )}
         </section>
       </div>
       <button

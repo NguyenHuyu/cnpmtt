@@ -1,9 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react'
-import {
-  useGetServicesQuery,
-  useDeleteServiceMutation
-} from '@/redux/exportModule'
+import { useGetBillsQuery, useDeleteRoomMutation } from '@/redux/exportModule'
 import {
   Modal,
   ModalContent,
@@ -17,31 +14,22 @@ import {
   showErrorNotification,
   showSuccessNotification
 } from '@/lib/notifications'
-import Formtaodichvu from './Formtaodichvu'
 import { Spinner } from '@nextui-org/react'
-import DetailsLoaiDichVu from '../Details/DetailsLoaiDichVu'
-
-const TableDichVu = () => {
+import DetailsLoaiPhong from '../Details/DetailsLoaiPhong'
+import DetailsNhanVien from '../Details/DetailsNhanVien'
+import DetailsKhachHang from '../Details/DetailsKhachHang'
+const TableHoaDon = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const { data: dataServices, isFetching: isFetchingDataServices } =
-    useGetServicesQuery({ dataQuery: '' })
-  const [deleteServices] = useDeleteServiceMutation()
-  const [idTypeRoom, setIdTypeRoom]: any = useState(undefined)
+  const { data: dataBills, isFetching: isFetchingDataBills } = useGetBillsQuery(
+    { dataQuery: '' }
+  )
+  const [deleteRoom] = useDeleteRoomMutation()
+  const [idRoom, setIdRoom]: any = useState(undefined)
   const [inputSearch, setInputSearch] = useState('')
   const [data, setData]: any = useState(undefined)
-  useEffect(() => {
-    if (inputSearch != '') {
-      const filterData = dataServices.filter((data: any) => {
-        return data.madichvu.includes(inputSearch)
-      })
-      setData(filterData)
-    } else {
-      setData(dataServices)
-    }
-  }, [inputSearch, dataServices])
   //
   const handleDel = async (id: any) => {
-    await deleteServices(id)
+    await deleteRoom(id)
       .unwrap()
       .then(() => {
         showSuccessNotification('Xóa thành công')
@@ -53,19 +41,19 @@ const TableDichVu = () => {
   return (
     <div className='relative '>
       <div className='flex gap-[60px] justify-center  items-center pr-[100px]'>
-        <button
+        {/* <button
           onClick={() => {
-            setIdTypeRoom(undefined)
+            setIdRoom(undefined)
             onOpen()
           }}
           className='text-white h-[40px] bg-blue-600 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
         >
-          Tạo dịch vụ mới
-        </button>
+          Tạo phòng mới
+        </button> */}
         {/* search */}
-        <div className='w-[700px]'>
+        {/* <div className='w-[700px]'>
           <label className='mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white'>
-            Tìm
+            Search
           </label>
           <div className='relative'>
             <div className='absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none'>
@@ -100,10 +88,10 @@ const TableDichVu = () => {
               Tìm
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
       {/* table */}
-      {isFetchingDataServices ? (
+      {isFetchingDataBills ? (
         <div className='w-[100px] mx-auto mt-[100px]'>
           {' '}
           <Spinner />
@@ -113,27 +101,35 @@ const TableDichVu = () => {
           <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
             <tr>
               <th scope='col' className='px-6 py-3'>
-                Tên dịch vụ
+                Mã hóa đơn
               </th>
               <th scope='col' className='px-6 py-3'>
-                Loại dịch vụ
+                Nhân viên tạo
               </th>
               <th scope='col' className='px-6 py-3'>
-                Giá
+                Mã phiếu thuê
               </th>
               <th scope='col' className='px-6 py-3'>
-                Trạng thái
+                Khách hàng
               </th>
-
               <th scope='col' className='px-6 py-3'>
-                Tùy chọn
+                Hình thức thanh toán
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Ghi chú
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Số ngày thuê
+              </th>
+              <th scope='col' className='px-6 py-3'>
+                Tổng giá tiền
               </th>
             </tr>
           </thead>
 
           <tbody>
-            {data &&
-              data.map((item: any) => {
+            {dataBills &&
+              dataBills.map((item: any) => {
                 return (
                   <tr
                     key={item.id}
@@ -143,36 +139,23 @@ const TableDichVu = () => {
                       scope='row'
                       className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
                     >
-                      {item.madichvu}
+                      {item.id}
                     </th>
                     <td className='px-6 py-4'>
-                      <DetailsLoaiDichVu
-                        id={item.maloaidichvu}
-                        field='tenloaidichvu'
+                      <DetailsNhanVien id={item.manhanvien} field='ho' />{' '}
+                      <DetailsNhanVien id={item.manhanvien} field='ten' />
+                    </td>
+                    <td className='px-6 py-4'>{item.maphieuthue}</td>
+                    <td className='px-6 py-4'>
+                      <DetailsKhachHang
+                        id={item.makhachhang}
+                        field='tenkhachhang'
                       />
                     </td>
-                    <td className='px-6 py-4'>{item.gia}</td>
-                    <td className='px-6 py-4'>{item.trangthai}</td>
-                    <td className='px-6 py-4'>
-                      <span
-                        className=' cursor-pointer'
-                        onClick={() => {
-                          setIdTypeRoom(item.id)
-                          onOpen()
-                        }}
-                      >
-                        sửa
-                      </span>{' '}
-                      |{' '}
-                      <span
-                        className=' cursor-pointer'
-                        onClick={() => {
-                          handleDel(item.id)
-                        }}
-                      >
-                        xóa
-                      </span>
-                    </td>
+                    <td className='px-6 py-4'>{item.hinhthucthanhtoan}</td>
+                    <td className='px-6 py-4'>{item.ghichu}</td>
+                    <td className='px-6 py-4'>{item.songaythue}</td>
+                    <td className='px-6 py-4'>{item.tonggiatien.toFixed(0)}</td>
                   </tr>
                 )
               })}
@@ -184,11 +167,9 @@ const TableDichVu = () => {
           {(onClose) => (
             <>
               <ModalHeader className='flex flex-col gap-1'>
-                Form dịch vụ
+                Form tạo phòng
               </ModalHeader>
-              <ModalBody>
-                <Formtaodichvu id={idTypeRoom} />
-              </ModalBody>
+              <ModalBody>{/* <Formtaophong id={idRoom} /> */}</ModalBody>
               <ModalFooter>
                 <Button color='danger' variant='light' onPress={onClose}>
                   Đóng
@@ -205,4 +186,4 @@ const TableDichVu = () => {
   )
 }
 
-export default TableDichVu
+export default TableHoaDon

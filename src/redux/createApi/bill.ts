@@ -17,7 +17,7 @@ export const billApi = createApi({
       query: (id) => `/daa/bill?id=${id}`,
       providesTags: ['bill']
     }),
-    addBill: build.mutation<any, string>({
+    addBill: build.mutation<any, any>({
       query(body) {
         return {
           url: '/daa/bill',
@@ -27,7 +27,7 @@ export const billApi = createApi({
       },
       invalidatesTags: ['bill']
     }),
-    updateBill: build.mutation<any, { id: string; body: Omit<any, 'id'> }>({
+    updateBill: build.mutation<any, any>({
       query(body) {
         return {
           url: `/daa/bill?id=${body.id}`,

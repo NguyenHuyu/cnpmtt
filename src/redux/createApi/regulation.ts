@@ -17,7 +17,7 @@ export const regulationApi = createApi({
       query: (id) => `/daa/regulation?id=${id}`,
       providesTags: ['regulation']
     }),
-    addRegulation: build.mutation<any, string>({
+    addRegulation: build.mutation<any, any>({
       query(body) {
         return {
           url: '/daa/regulation',
@@ -27,7 +27,7 @@ export const regulationApi = createApi({
       },
       invalidatesTags: ['regulation']
     }),
-    updateRegulation: build.mutation<any, { id: string; body: Omit<any, 'id'> }>({
+    updateRegulation: build.mutation<any,any>({
       query(body) {
         return {
           url: `/daa/regulation?id=${body.id}`,

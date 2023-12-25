@@ -246,7 +246,7 @@ export const Aside = () => {
                 <ul id='dropdown-example' className=' block py-2 space-y-2'>
                   <li>
                     <Link
-                      href='/ql-phong'
+                      href='/ql-baocao'
                       className='flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     >
                       Báo cáo doanh thu
@@ -254,7 +254,7 @@ export const Aside = () => {
                   </li>
                   <li>
                     <Link
-                      href='/ql-loaiphong'
+                      href='/ql-tylesudung'
                       className='flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700'
                     >
                       Báo cáo tỉ lệ sử dụng phòng

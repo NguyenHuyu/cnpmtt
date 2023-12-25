@@ -17,7 +17,7 @@ export const serviceDetailApi = createApi({
       query: (id) => `/daa/service-detail?id=${id}`,
       providesTags: ['serviceDetail']
     }),
-    addServiceDetail: build.mutation<any, string>({
+    addServiceDetail: build.mutation<any, any>({
       query(body) {
         return {
           url: '/daa/service-detail',
@@ -27,10 +27,7 @@ export const serviceDetailApi = createApi({
       },
       invalidatesTags: ['serviceDetail']
     }),
-    updateServiceDetail: build.mutation<
-      any,
-      { id: string; body: Omit<any, 'id'> }
-    >({
+    updateServiceDetail: build.mutation<any, any>({
       query(body) {
         return {
           url: `/daa/service-detail?id=${body.id}`,
