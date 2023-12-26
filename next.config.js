@@ -16,7 +16,7 @@ const nextConfig = {
   env: {
     NEXTAUTH_URL:
       process.env.NODE_ENV === 'production'
-        ? 'https://seplabeo.com'
+        ? 'https://huynm.site'
         : 'http://localhost:3000',
     NEXTAUTH_SECRET: '2342234234dfd'
   }
