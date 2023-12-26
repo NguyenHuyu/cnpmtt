@@ -82,7 +82,7 @@ model KhachHang{
   diachi String 
   quocgia String
   dsphieuthue PhieuThuePhong[]
-  hoadon HoaDon?
+  hoadon HoaDon[]
 }
 model PhieuThuePhong{
    id             Int        @id @default(autoincrement())
@@ -109,7 +109,7 @@ model HoaDon{
   hinhthucthanhtoan String
   ghichu String
   khachHang   KhachHang @relation(fields: [makhachhang], references: [id])
-  makhachhang Int  @unique
+  makhachhang Int  
   songaythue String
   tonggiatien String
   dathanhtoan Boolean
